@@ -1,0 +1,65 @@
+import java.util.Scanner;
+
+public class StringChanger {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String inputString = scanner.nextLine();
+        String command = scanner.nextLine();
+
+        while (!command.equals("End")) {
+            String[] tokens = command.split("\\s+");
+
+            switch (tokens[0]) {
+                case "Translate":
+                    char toReplace = tokens[1].charAt(0);
+                    String replacement = tokens[2];
+                    inputString = inputString.replace(toReplace, replacement.charAt(0));
+                    System.out.println(inputString);
+                    break;
+
+                case "Includes":
+                    String substring = tokens[1];
+                    if (inputString.contains(substring)) {
+                        System.out.println("True");
+                    } else {
+                        System.out.println("False");
+                    }
+                    break;
+
+                case "Start":
+                    String startSubstring = tokens[1];
+                    if (inputString.startsWith(startSubstring)) {
+                        System.out.println("True");
+                    } else {
+                        System.out.println("False");
+                    }
+                    break;
+
+                case "Lowercase":
+                    inputString = inputString.toLowerCase();
+                    System.out.println(inputString);
+                    break;
+
+                case "FindIndex":
+                    char toFind = tokens[1].charAt(0);
+                    int lastIndex = inputString.lastIndexOf(toFind);
+                    System.out.println(lastIndex);
+                    break;
+
+                case "Remove":
+                    int startIndex = Integer.parseInt(tokens[1]);
+                    int count = Integer.parseInt(tokens[2]);
+                    int endIndex = startIndex + count;
+                    inputString = inputString.substring(0, startIndex) + inputString.substring(endIndex);
+                    System.out.println(inputString);
+                    break;
+
+                default:
+                    break;
+            }
+
+            command = scanner.nextLine();
+        }
+    }
+}
