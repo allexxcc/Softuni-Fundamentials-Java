@@ -1,0 +1,59 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Map<String, int[]> records = new LinkedHashMap<>();
+        List<String> order = new ArrayList<>(); // Keep track of order
+
+        String input = scanner.nextLine();
+
+        while (!input.equals("Log out")) {
+            String[] tokens = input.split(": ");
+            String command = tokens[0];
+            String username = tokens[1];
+
+            switch (command) {
+                case "New follower":
+                    if (!records.containsKey(username)) {
+                        records.put(username, new int[]{0, 0});
+                        order.add(username); // Add to order
+                    }
+                    break;
+                case "Like":
+                    int likesToAdd = Integer.parseInt(tokens[2]);
+                    if (!records.containsKey(username)) {
+                        records.put(username, new int[]{likesToAdd, 0});
+                        order.add(username); // Add to order
+                    } else {
+                        records.get(username)[0] += likesToAdd;
+                    }
+                    break;
+                case "Comment":
+                    if (!records.containsKey(username)) {
+                        records.put(username, new int[]{0, 1});
+                        order.add(username); // Add to order
+                    } else {
+                        records.get(username)[1]++;
+                    }
+                    break;
+                case "Blocked":
+                    if (records.containsKey(username)) {
+                        records.remove(username);
+                        order.remove(username); // Remove from order
+                    } else {
+                        System.out.println(username + " doesn't exist.");
+                    }
+                    break;
+            }
+            input = scanner.nextLine();
+        }
+
+        System.out.printf("%d followers\n", records.size());
+
+        for (String username : order) {
+            int[] stats = records.get(username);
+            System.out.printf("%s: %d\n", username, stats[0] + stats[1]);
+        }
+    }
+}
